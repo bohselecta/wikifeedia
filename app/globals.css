@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Primary Colors */
+  --background-primary: #0a0a0a;
+  --background-secondary: #141414;
+  --background-tertiary: #1a1a1a;
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #b4b4b4;
+  --text-tertiary: #6b6b6b;
+  
+  /* Accent Colors */
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  
+  /* Borders */
+  --border-primary: #262626;
+  --border-secondary: #333333;
+  
+  /* Category Colors */
+  --category-history: #8B4513;
+  --category-science: #4169E1;
+  --category-technology: #32CD32;
+  --category-nature: #228B22;
+  --category-culture: #FF69B4;
+  --category-biography: #FF8C00;
+  --category-mystery: #9370DB;
+}
+
+body {
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+

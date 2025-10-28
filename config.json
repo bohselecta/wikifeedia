@@ -1,0 +1,24 @@
+{
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "name": "wikifeedia",
+    "user": "wikifeedia_user",
+    "password": "changeme"
+  },
+  "ollama": {
+    "model": "gemma2:4b",
+    "base_url": "http://localhost:11434"
+  },
+  "generator": {
+    "batch_size": 5,
+    "batch_delay_seconds": 600,
+    "min_quality_score": 6.0,
+    "target_post_buffer": 500
+  },
+  "wikipedia": {
+    "dump_path": "./wikipedia_dump.xml.bz2",
+    "extracted_path": "./extracted_wiki"
+  }
+}
+

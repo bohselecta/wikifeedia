@@ -1,0 +1,21 @@
+[1A[2K[WebServer]  ⚠ Port 3000 is in use, trying 3001 instead.
+
+[1A[2K[WebServer]  ⨯ node_modules/@supabase/supabase-js/dist/module/lib/helpers.js (42:14) @ validateSupabaseUrl
+
+[1A[2K[WebServer]  ⨯ Error: supabaseUrl is required.
+[WebServer]     at eval (./lib/supabase.ts:9:85)
+[WebServer]     at (ssr)/./lib/supabase.ts (/Users/home/Desktop/wikifeedia/.next/server/app/page.js:261:1)
+[WebServer]     at __webpack_require__ (/Users/home/Desktop/wikifeedia/.next/server/webpack-runtime.js:33:42)
+[WebServer]     at eval (./app/page.tsx:9:71)
+[WebServer]     at (ssr)/./app/page.tsx (/Users/home/Desktop/wikifeedia/.next/server/app/page.js:206:1)
+[WebServer]     at __webpack_require__ (/Users/home/Desktop/wikifeedia/.next/server/webpack-runtime.js:33:42)
+[WebServer]     at JSON.parse (<anonymous>)
+[WebServer] null
+
+Error: Timed out waiting 60000ms from config.webServer.
+
+[1A[2K
+To open last HTML report run:
+
+  npx playwright show-report
+

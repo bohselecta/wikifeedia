@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wikifeedia Control Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+    <div class="max-w-6xl mx-auto p-6">
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold mb-2">🎛️ Wikifeedia Control Panel</h1>
+            <p class="text-gray-400">Manually control content generation and review posts before publishing</p>
+        </header>
+
+        <!-- Control Panel -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-6 border border-gray-700">
+            <h2 class="text-2xl font-bold mb-4">Generator Controls</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <button onclick="generatePost()" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-bold text-lg transition-colors">
+                    ⚡ Generate 1 Post
+                </button>
+                <button onclick="generateBatch()" class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-bold text-lg transition-colors">
+                    🎯 Generate 5 Posts
+                </button>
+                <button onclick="loadPending()" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-bold text-lg transition-colors">
+                    📋 View Pending
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-700 rounded p-4">
+                    <div class="text-sm text-gray-400 mb-1">Status</div>
+                    <div id="status" class="text-xl font-bold text-green-400">Ready</div>
+                </div>
+                <div class="bg-gray-700 rounded p-4">
+                    <div class="text-sm text-gray-400 mb-1">Generated Today</div>
+                    <div id="count" class="text-xl font-bold">0 posts</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Posts -->
+        <div id="pending-section" class="hidden">
+            <h2 class="text-2xl font-bold mb-4">Pending Approval</h2>
+            <div id="pending-posts" class="space-y-4"></div>
+        </div>
+
+        <!-- Generated Posts Display -->
+        <div id="generated-section">
+            <h2 class="text-2xl font-bold mb-4">Generated Posts</h2>
+            <div id="generated-posts" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <script>
+        let generatedPosts = [];
+
+        async function generatePost() {
+            setStatus('⏳ Generating...', 'yellow-400');
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({count: 1})
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    generatedPosts.push(...result.posts);
+                    renderPosts();
+                    setStatus('✅ Success', 'green-400');
+                    updateCount();
+                } else {
+                    setStatus('❌ Error', 'red-400');
+                }
+            } catch (error) {
+                console.error(error);
+                setStatus('❌ Connection Error', 'red-400');
+            }
+        }
+
+        async function generateBatch() {
+            setStatus('⏳ Generating batch...', 'yellow-400');
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({count: 5})
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    generatedPosts.push(...result.posts);
+                    renderPosts();
+                    setStatus('✅ ' + result.posts.length + ' posts generated', 'green-400');
+                    updateCount();
+                } else {
+                    setStatus('❌ Error', 'red-400');
+                }
+            } catch (error) {
+                console.error(error);
+                setStatus('❌ Connection Error', 'red-400');
+            }
+        }
+
+        function renderPosts() {
+            const container = document.getElementById('generated-posts');
+            
+            if (generatedPosts.length === 0) {
+                container.innerHTML = '<p class="text-gray-400">No posts generated yet. Click a button above to generate posts!</p>';
+                return;
+            }
+
+            container.innerHTML = generatedPosts.map((post, index) => `
+                <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded text-sm font-bold">#${index + 1}</span>
+                            <span class="bg-${getCategoryColor(post.category)}-600 text-white px-3 py-1 rounded text-sm">${post.category}</span>
+                            <span class="text-gray-400">Quality: ${post.quality_score}</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="deletePost(${index})" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-sm">🗑️ Delete</button>
+                            <button onclick="approvePost(${index})" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-sm">✅ Approve</button>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold mb-3">${post.title}</h3>
+                    
+                    ${post.image ? `
+                        <div class="mb-4 rounded overflow-hidden bg-gray-900 flex items-center justify-center">
+                            <img src="${post.image}" alt="${post.title}" class="max-w-full max-h-48 object-contain" />
+                        </div>
+                    ` : ''}
+                    
+                    <p class="text-gray-300 mb-4">${post.content}</p>
+                    
+                    <div class="text-gray-400 text-sm border-t border-gray-700 pt-4">
+                        <div class="mb-2"><strong>TL;DR:</strong> ${post.tldr}</div>
+                        <div class="flex gap-2 flex-wrap">
+                            ${post.tags.map(tag => `<span class="bg-gray-700 px-2 py-1 rounded text-xs">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                'History': 'orange',
+                'Science': 'blue',
+                'Technology': 'green',
+                'Nature': 'emerald',
+                'Culture': 'pink',
+                'Biography': 'purple',
+                'Mystery': 'violet'
+            };
+            return colors[category] || 'gray';
+        }
+
+        function deletePost(index) {
+            generatedPosts.splice(index, 1);
+            renderPosts();
+            updateCount();
+        }
+
+        function approvePost(index) {
+            const post = generatedPosts[index];
+            // In real system, this would save to database
+            alert(`Approved: ${post.title}\n\n(In production, this would save to the database)`);
+            generatedPosts.splice(index, 1);
+            renderPosts();
+            updateCount();
+        }
+
+        function setStatus(text, color) {
+            document.getElementById('status').textContent = text;
+            document.getElementById('status').className = `text-xl font-bold text-${color}`;
+        }
+
+        function updateCount() {
+            document.getElementById('count').textContent = generatedPosts.length + ' posts';
+        }
+
+        function loadPending() {
+            // This would load from local storage or database
+            alert('Pending posts feature - would load from database');
+        }
+
+        // Initialize
+        renderPosts();
+    </script>
+</body>
+</html>
+
