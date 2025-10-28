@@ -60,7 +60,7 @@ export default function AuthButton() {
     <>
       <button
         onClick={() => setShowLogin(!showLogin)}
-        className="px-4 py-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-lg font-medium transition-all"
+        className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-md font-medium transition-all border border-gray-700 hover:border-gray-600"
       >
         Sign In
       </button>
@@ -80,13 +80,13 @@ export default function AuthButton() {
               <button
                 onClick={handleLogin}
                 disabled={loading}
-                className="flex-1 px-4 py-2 bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded-lg font-medium disabled:opacity-50 transition-colors"
+                className="flex-1 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-md font-medium disabled:opacity-50 transition-colors"
               >
                 {loading ? 'Sending...' : 'Send Magic Link'}
               </button>
               <button
                 onClick={() => setShowLogin(false)}
-                className="px-4 py-2 bg-[#262626] hover:bg-[#333333] text-white rounded-lg transition-colors"
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition-colors"
               >
                 Cancel
               </button>

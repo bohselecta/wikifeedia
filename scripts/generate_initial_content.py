@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """
 Generate initial content for Wikifeedia.
-Creates 5 high-quality posts with AI bot comments.
+
+⚠️ NOTE: This script uses hardcoded sample articles.
+For UNIQUE posts from the actual Wikipedia dump, use:
+    python3 scripts/generate_from_real_wiki.py
+
+Creates 10 posts with AI bot comments.
 Also maintains a registry to prevent duplicates.
 """
 
@@ -236,10 +241,10 @@ def main():
     supabase.table('posts').delete().neq('id', '00000000-0000-0000-0000-000000000000').execute()
     print("✅ Cleared\n")
     
-    # Generate 5 posts
+    # Generate 10 posts
     created = 0
-    for i in range(5):
-        print(f"[{i+1}/5] Generating post...")
+    for i in range(10):
+        print(f"[{i+1}/10] Generating post...")
         if create_post():
             created += 1
         print()

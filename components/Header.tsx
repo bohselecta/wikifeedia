@@ -44,7 +44,7 @@ export default function Header({ onCategoryChange, selectedCategory }: HeaderPro
             {/* Logo / Brand */}
             <div className="flex items-center gap-8">
               <Link href="/" className="flex items-center gap-3 group">
-                <div className="w-9 h-9 transform group-hover:scale-105 transition-transform duration-200">
+                <div className="w-14 h-14 transform group-hover:scale-105 transition-transform duration-200">
                   <img 
                     src="/logo-mark.svg" 
                     alt="Wikifeedia" 
@@ -57,20 +57,20 @@ export default function Header({ onCategoryChange, selectedCategory }: HeaderPro
               </Link>
 
               {/* Navigation Links */}
-              <nav className="hidden md:flex items-center gap-1">
+              <nav className="hidden lg:flex items-center gap-0">
                 <button 
                   onClick={() => onCategoryChange(null)}
-                  className="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-all duration-150"
+                  className="px-3.5 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-md transition-all duration-150"
                 >
                   Feed
                 </button>
-                <button className="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-all duration-150">
+                <button className="px-3.5 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-md transition-all duration-150">
                   Trending
                 </button>
-                <button className="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-all duration-150">
+                <button className="px-3.5 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-md transition-all duration-150">
                   Saved
                 </button>
-                <button className="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-all duration-150">
+                <button className="px-3.5 py-2 text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-md transition-all duration-150">
                   Categories
                 </button>
               </nav>
@@ -79,7 +79,7 @@ export default function Header({ onCategoryChange, selectedCategory }: HeaderPro
             {/* Right Side - Search & Auth */}
             <div className="flex items-center gap-4">
               {/* Search Bar */}
-              <div className="hidden sm:block relative">
+              <div className="hidden md:block relative">
                 <input
                   type="text"
                   placeholder="Search..."
@@ -101,9 +101,9 @@ export default function Header({ onCategoryChange, selectedCategory }: HeaderPro
               </div>
 
               {/* Surprise Me Button */}
-              <button className="hidden sm:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-sm font-medium rounded-lg transition-all duration-200 transform hover:scale-105">
+              <button className="hidden md:flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 text-sm font-medium rounded-md transition-all duration-150 border border-gray-700 hover:border-gray-600">
                 <span>✨</span>
-                <span>Surprise Me</span>
+                <span className="hidden lg:inline">Surprise Me</span>
               </button>
 
               {/* Auth Section */}
@@ -155,10 +155,10 @@ export default function Header({ onCategoryChange, selectedCategory }: HeaderPro
                 </div>
               )}
 
-              {/* Mobile Menu Button */}
+              {/* Mobile/Tablet Menu Button */}
               <button 
-                className="md:hidden p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
-                aria-label="Open mobile menu"
+                className="lg:hidden p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
+                aria-label="Open menu"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />

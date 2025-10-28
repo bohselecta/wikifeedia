@@ -17,34 +17,45 @@ export default function Home() {
 
   async function loadPosts() {
     try {
-      let query = supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(20)
-
-      if (selectedCategory) {
-        query = query.eq('category', selectedCategory)
-      }
-
-      const { data, error } = await query
-
-      if (error) throw error
+      // Check if we have valid Supabase credentials
+      const hasValidConfig = supabase && 
+        (supabase as any).supabaseUrl && 
+        (supabase as any).supabaseUrl !== 'https://placeholder.supabase.co'
       
-      // Load comment counts for each post
-      const postsWithComments = await Promise.all(
-        (data || []).map(async (post) => {
-          const { count } = await supabase
-            .from('comments')
-            .select('*', { count: 'exact', head: true })
-            .eq('post_id', post.id)
+      if (hasValidConfig) {
+        let query = supabase.from('posts').select('*').order('created_at', { ascending: false }).limit(20)
 
-          return {
-            ...post,
-            commentCount: count || 0
-          }
-        })
-      )
+        if (selectedCategory) {
+          query = query.eq('category', selectedCategory)
+        }
 
-      setPosts(postsWithComments)
+        const { data, error } = await query
+
+        if (error) throw error
+        
+        // Load comment counts for each post
+        const postsWithComments = await Promise.all(
+          (data || []).map(async (post) => {
+            const { count } = await supabase
+              .from('comments')
+              .select('*', { count: 'exact', head: true })
+              .eq('post_id', post.id)
+
+            return {
+              ...post,
+              commentCount: count || 0
+            }
+          })
+        )
+
+        setPosts(postsWithComments)
+      } else {
+        // No database configured yet - show empty state
+        setPosts([])
+      }
     } catch (error) {
       console.error('Error loading posts:', error)
+      setPosts([])
     } finally {
       setLoading(false)
     }
