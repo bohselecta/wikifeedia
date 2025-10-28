@@ -56,6 +56,8 @@ posted_titles_registry.json
 # Data files
 *.torrent
 *.xml.bz2
+*.txt.bz2
+enwiki-*
 data/
 extracted_wiki/
 test_posts.json
